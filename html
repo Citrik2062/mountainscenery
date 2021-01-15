@@ -1,0 +1,64 @@
+var drawBackground = function(time) {
+   //change the time value to see the sun set...
+    background(110-time/2, 250-time/2, 250-time/2);
+    //draws the sun
+    stroke(255, 220-time/1.5, 0);
+    fill(255, 220-time/1.5, 0);
+    ellipse(time, time, 50, 50);
+};
+
+var drawRange = function(ranges) {
+    var incAmount = 0.01;
+    
+    //uses a for loop to create several mountain ranges
+    //change the initialization value of a to see what happens!
+    for (var a = ranges; a > 0; a--) {
+        stroke(18, (a * 40), 0);
+        for (var b = 0; b < incAmount*width; b += incAmount) {
+            var c = noise(b + (a*1000));
+            var d = map(c, 0, 1, 0, height/2);
+            rect(b*100, 450 - (d + (a * 50)), 1, 400);
+        }
+    }
+    
+};
+
+var drawClouds = function(height, time){
+    //draws clouds in the sky
+    for (var i = 0; i <= 400; i+=3){
+            for (var k = 0; k < height; k += 3){
+                stroke(0,255, 0, 0);
+                fill(255 - time/10, 255 - time/10, 255 - time/10, (noise(i/40+time,k/25,time/85)*180 - k/(height/170)));
+                rect(i-5,k-5,5,5);
+            }
+        }
+};
+
+var drawBirds = function(time) {
+    if (time<150){
+        fill(0, 0, 0);
+        noStroke();
+        arc(time*5 - 30, 20*Math.sin(time%130-5)+50, 20, 5, -20, 200);
+        arc(time*5, 30*Math.sin(time%130-5)+70, 20, 5, -20, 200);
+        arc(time*5 - 60, 30*Math.cos(time%130)+50, 20, 5, -20, 200);
+        arc(time*5 + 40, 20*Math.cos(time%130)+50, 20, 5, -20, 200);
+        
+        arc(400-time*5, 30*Math.sin(time%130)+50, 20, 5, -20, 200);
+        arc(400-time*5 - 10, 30*Math.sin(time%130)+70, 20, 5, -20, 200);
+        arc(400-time*5 + 50, 20*Math.cos(time%130+50)+50, 20, 5, -20, 200);
+        arc(400-time*5 - 50, 20*Math.cos(time%130+50)+50, 20, 5, -20, 200);
+    }
+};
+
+var timer = 0;
+
+draw = function() {
+    drawBackground(timer);
+    drawClouds(75, timer);
+    drawRange(4);
+    drawBirds(timer);
+    timer+=0.5; //this variable, time, makes the sun slowly set
+    //change the increment value of time to make the sun set faster or slower.
+    
+};
+
